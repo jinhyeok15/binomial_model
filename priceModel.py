@@ -1,4 +1,5 @@
 import numpy as np
+from binomial import Binomial
 
 market_data = {
     "Maturity": [0.5, 1.0, 1.5],
@@ -12,6 +13,9 @@ irm = [
     [0.0339, 0.0095]
 ]
 
+bi = Binomial(2)
+bi.append(irm)
+
 
 def model_price(value, ir, delta=1):
     return value*np.exp(-ir*delta)
@@ -23,17 +27,17 @@ def rnp(p1, p2, ir, pm, delta=1):
 
 
 if __name__ == '__main__':
-    print(model_price(100, irm[1][0], delta=0.5))
-    p1 = model_price(100, irm[1][0], delta=0.5)
-    p2 = model_price(100, irm[1][1], delta=0.5)
+    r0 = bi.value(0, 0)
+    r1 = bi.value(1, 0)
+    r2 = bi.value(1, 1)
+    print(model_price(100, r1, delta=0.5))
+    p1 = model_price(100, r1, delta=0.5)
+    p2 = model_price(100, r2, delta=0.5)
     pm = market_data["Price"][1]
-    rnp = rnp(p1, p2, irm[0], pm, delta=0.5)
+    rnp = rnp(p1, p2, r0, pm, delta=0.5)
     print("rnp: "+str(rnp))
 
     # put option payoff (RNP approach)
-    r0 = irm[0]
-    r1 = irm[1][0]
-    r2 = irm[1][1]
     rk = 0.02
     put_p1 = 100*max(rk-r1, 0)
     put_p2 = 100*max(rk-r2, 0)
