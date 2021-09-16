@@ -31,7 +31,7 @@ class Binomial:
             tree = 'Not append data'
         else:
             tree = self.tree
-        return f'Binomial Object {self.__class__}\n' + \
+        return f'Binomial Object {super().__str__()}\n' + \
                f'Size: {self.size}\n' + \
                f'Address List: {str(self.address)}\n' + \
                f'Address Length: {len(self.address)}\n' + \
