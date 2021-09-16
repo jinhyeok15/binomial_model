@@ -1,30 +1,35 @@
 class Binomial:
-    def __init__(self, size, first_data):
+    def __init__(self, size):
         self.size = size
-        self.first_data = first_data
-        self.last_node = 0
-        self.tree = [first_data]
+        self.address = []
+        cnt = 0
+        for i in range(size):
+            length = 2**size-1
+            if i == 0:
+                n = 0
+                while n < length:
+                    self.address.append([0])
+                    n += 1
+                cnt += 1
+                continue
+            for j in range(2**(i-1)):
+                for k in range(2):
+                    self.address[cnt].append(k)
+                    cnt += 1
+                n = cnt
+                while n < length:
+                    if n < cnt + (length - cnt) / 2:
+                        self.address[n].append(0)
+                    else:
+                        self.address[n].append(1)
+                    n += 1
 
-    def append(self, num, data):
-        if self.last_node == 0:
-            print("Cannot append")
-            return
-        self.tree[num].append(data)
+    def __str__(self):
+        return f'Size: {self.size}\nAddress List: {str(self.address)}'
 
-    def forward(self):
-        if self.last_node == self.tree.list_size:
-            raise MemoryError
-        self.tree.insertFirst([])
-
-    def select(self, num):
-        self.tree.selectNode(num)
-
-    def size():
-        return self.size
+    # def append(self, ):
 
 
 if __name__ == "__main__":
-    bi = Binomial(3, 1.74)
-    bi.forward()
-    bi.append(3.39)
-
+    b = Binomial(4)
+    print(b)
