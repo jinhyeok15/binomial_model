@@ -25,7 +25,9 @@ class Binomial:
                     n += 1
 
     def __str__(self):
-        return f'Size: {self.size}\nAddress List: {str(self.address)}'
+        return f'Size: {self.size}\n' + \
+               f'Address List: {str(self.address)}\n' + \
+               f'Address Length: {len(self.address)}'
 
     # def append(self, ):
 
