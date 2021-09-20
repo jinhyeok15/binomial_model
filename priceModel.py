@@ -1,5 +1,4 @@
 import numpy as np
-from binomial import Binomial
 
 
 def model_price(value, ir, delta=1.0):
@@ -29,6 +28,7 @@ if __name__ == '__main__':
         [0.0339, 0.0095]
     ]
 
+    from binomial import Binomial
     bi_irm = Binomial(2)
     bi_irm.append(sample_irm)
 
