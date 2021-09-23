@@ -43,7 +43,10 @@ class Binomial:
         cnt = 0
         for arr in data:
             if cnt == 0:
-                self.tree[arr] = self.address[cnt]
+                try:
+                    self.tree[arr[0]] = self.address[cnt]
+                except IndexError:
+                    self.tree[arr] = self.address[cnt]
                 cnt += 1
                 continue
             for i in arr:
