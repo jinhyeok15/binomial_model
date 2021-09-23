@@ -2,11 +2,12 @@ class Binomial:
     def __init__(self, size):
         self.size = size
         self.address = []
-        self.tree = {}
+        self.tree = []
+
         # make address model
+        length = 2 ** size - 1
         cnt = 0
         for i in range(size):
-            length = 2**size-1
             if i == 0:
                 n = 0
                 while n < length:
@@ -44,13 +45,13 @@ class Binomial:
         for arr in data:
             if cnt == 0:
                 try:
-                    self.tree[arr[0]] = self.address[cnt]
-                except IndexError:
-                    self.tree[arr] = self.address[cnt]
+                    self.tree.append([self.address[cnt], arr[0]])
+                except TypeError:
+                    self.tree.append([self.address[cnt], arr])
                 cnt += 1
                 continue
             for i in arr:
-                self.tree[i] = self.address[cnt]
+                self.tree.append([self.address[cnt], i])
                 cnt += 1
         return 1
 
@@ -62,10 +63,20 @@ class Binomial:
 
     def value(self, node, index):
         address = self.path(node, index)
-        for key, value in self.tree.items():
-            if address == value:
-                return key
+        for i in self.tree:
+            if i[0] == address:
+                return i[1]
         return None
+
+    def child(self, node, index):
+        parent = self.path(node, index)
+        path1 = parent.append(0)
+        path2 = parent.append(1)
+        children = []
+        for i in self.tree:
+            if i[0] == path1 or i[0] == path2:
+                children.append(i[1])
+        return children
 
 
 if __name__ == "__main__":
