@@ -7,7 +7,9 @@
 
 <log
 <9.24
-* binomial 에서 address 부분 수정하기
+* binomial 에서 address 부분 수정하기:
+t변수 추가.
+/
 * multi-step -> numpy.float not callable error 수정
 >
 >

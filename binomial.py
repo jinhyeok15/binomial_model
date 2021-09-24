@@ -20,15 +20,18 @@ class Binomial:
                     self.address[cnt].append(k)
                     cnt += 1
                 n = cnt
+                t = i+1
                 while n < length:
-                    if n < cnt + (length - cnt) / 2:
+                    if n < cnt + 2**t / 2:
                         self.address[n].append(0)
                     else:
                         self.address[n].append(1)
                     n += 1
+                    if n == cnt + 2**t:
+                        t += 1
 
     def __str__(self):
-        if self.tree == {}:
+        if not self.tree:
             tree = 'Not append data'
         else:
             tree = self.tree
@@ -82,9 +85,10 @@ class Binomial:
 if __name__ == "__main__":
     irm = [
         0.0174,
-        [0.0339, 0.0095]
+        [0.0339, 0.0095],
+        [0.05, 0.0256, 0.0256, 0.0011]
     ]
-    b = Binomial(2)
+    b = Binomial(3)
     print(b)
     b.append(irm)
     print(str(b.tree))

@@ -44,12 +44,14 @@ while i >= 0:
     rear = node_price
     i -= 1
 
+print(bond_price)
+
 bp = Binomial(3)
 bp.append(bond_price)
 
 bp10 = bp.value(1, 0)
 bp11 = bp.value(1, 1)
-print(type(bp10))
+
 rnp_adjusted = rnp(bp10, bp11, r00, pm3, delta=0.5)
 print(rnp_adjusted)
 if __name__ == '__main__':
