@@ -19,16 +19,16 @@ class Binomial:
                 for k in range(2):
                     self.address[cnt].append(k)
                     cnt += 1
-                n = cnt
-                t = i+1
-                while n < length:
-                    if n < cnt + 2**t / 2:
-                        self.address[n].append(0)
-                    else:
-                        self.address[n].append(1)
-                    n += 1
-                    if n == cnt + 2**t:
-                        t += 1
+            n = cnt
+            t = i+1
+            while n < length:
+                if n < cnt + 2**t / 2:
+                    self.address[n].append(0)
+                else:
+                    self.address[n].append(1)
+                n += 1
+                if n == cnt + 2**t:
+                    t += 1
 
     def __str__(self):
         if not self.tree:
