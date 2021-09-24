@@ -11,6 +11,6 @@
 t변수 추가.
 while문 -indent
 /
-* multi-step -> numpy.float not callable error 수정
+* multi-step -> numpy.float not callable error 수정: 완료/
 >
 >
