@@ -13,4 +13,9 @@ while문 -indent
 /
 * multi-step -> numpy.float not callable error 수정: 완료/
 >
+
+<9.25
+* model function 추가하기:
+/
+>
 >
