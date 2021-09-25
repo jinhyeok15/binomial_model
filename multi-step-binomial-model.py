@@ -14,46 +14,46 @@ sample_irm = [
     [0.05, 0.0256, 0.0256, 0.0011]
 ]
 
-irm = bi.model(sample_irm)
-
-r00 = irm.value(0, 0)
-r10 = irm.value(1, 0)
-r11 = irm.value(1, 1)
-p10 = model_price(100, r10, delta=0.5)
-p11 = model_price(100, r11, delta=0.5)
-pm2 = sample_market_data["Price"][1]
-pm3 = sample_market_data["Price"][2]
-
-not_adjusted_rnp = rnp(p10, p11, r00, pm2, delta=0.5)
-print("rnp not adjusted: " + str(not_adjusted_rnp))
-
-bond_price = []
-i = irm.size-1  # size = 3
-rear = [100 for r in range(2**irm.size)]
-while i >= 0:
-    node_price = []
-    for j in range(2**i):
-        c1 = rear[2*j]
-        c2 = rear[2*j+1]
-        rij = irm.value(i, j)
-        price = model_price(c1, rij, delta=0.5)*not_adjusted_rnp + \
-            model_price(c2, rij, delta=0.5)*(1-not_adjusted_rnp)
-        node_price.append(price)
-    bond_price.insert(0, node_price)
-    rear = node_price
-    i -= 1
-
-bp = bi.model(bond_price)
-
-bp10 = bp.value(1, 0)
-bp11 = bp.value(1, 1)
-
-adjusted_rnp = rnp(bp10, bp11, r00, pm3, delta=0.5)
-print("adjusted rnp: " + str(adjusted_rnp))
-
-expected_price = model_price(bp10, r10, delta=0.5)*adjusted_rnp + \
-    model_price(bp11, r11, delta=0.5)*(1-adjusted_rnp)
-print("expected price: " + str(expected_price))
 
 if __name__ == '__main__':
+    irm = bi.model(sample_irm)
+
+    r00 = irm.value(0, 0)
+    r10 = irm.value(1, 0)
+    r11 = irm.value(1, 1)
+    p10 = model_price(100, r10, delta=0.5)
+    p11 = model_price(100, r11, delta=0.5)
+    pm2 = sample_market_data["Price"][1]
+    pm3 = sample_market_data["Price"][2]
+
+    not_adjusted_rnp = rnp(p10, p11, r00, pm2, delta=0.5)
+    print("rnp not adjusted: " + str(not_adjusted_rnp))
+
+    bond_price = []
+    i = irm.size - 1  # size = 3
+    rear = [100 for r in range(2 ** irm.size)]
+    while i >= 0:
+        node_price = []
+        for j in range(2 ** i):
+            c1 = rear[2 * j]
+            c2 = rear[2 * j + 1]
+            rij = irm.value(i, j)
+            price = model_price(c1, rij, delta=0.5) * not_adjusted_rnp + \
+                model_price(c2, rij, delta=0.5) * (1 - not_adjusted_rnp)
+            node_price.append(price)
+        bond_price.insert(0, node_price)
+        rear = node_price
+        i -= 1
+
+    bp = bi.model(bond_price)
+
+    bp10 = bp.value(1, 0)
+    bp11 = bp.value(1, 1)
+
+    adjusted_rnp = rnp(bp10, bp11, r00, pm3, delta=0.5)
+    print("adjusted rnp: " + str(adjusted_rnp))
+
+    expected_price = np.exp(-r00 * 0.5) * (bp10 * adjusted_rnp + bp11 * (1 - adjusted_rnp))
+    print("expected price: " + str(expected_price))
+
     print("-----------------------------------")
