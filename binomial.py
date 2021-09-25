@@ -82,6 +82,12 @@ class Binomial:
         return children
 
 
+def model(tree):
+    bi = Binomial(len(tree))
+    bi.append(tree)
+    return bi
+
+
 if __name__ == "__main__":
     irm = [
         0.0174,
@@ -90,7 +96,5 @@ if __name__ == "__main__":
     ]
     b = Binomial(3)
     print(b)
-    b.append(irm)
-    print(str(b.tree))
-    print(b.value(0, 0))
-    print(b.value(1, 0))
+    a = model(irm)
+    print(a)

@@ -1,5 +1,5 @@
 from price import *
-from binomial import Binomial
+import binomial as bi
 
 sample_market_data = {
         "Maturity": [0.5, 1.0, 1.5],
@@ -14,8 +14,7 @@ sample_irm = [
     [0.05, 0.0256, 0.0256, 0.0011]
 ]
 
-irm = Binomial(3)
-irm.append(sample_irm)
+irm = bi.model(sample_irm)
 
 r00 = irm.value(0, 0)
 r10 = irm.value(1, 0)
@@ -44,8 +43,7 @@ while i >= 0:
     rear = node_price
     i -= 1
 
-bp = Binomial(3)
-bp.append(bond_price)
+bp = bi.model(bond_price)
 
 bp10 = bp.value(1, 0)
 bp11 = bp.value(1, 1)

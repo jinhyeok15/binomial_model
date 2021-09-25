@@ -1,5 +1,6 @@
 from price import *
 from binomial import Binomial
+import binomial as bi
 
 sample_market_data = {
         "Maturity": [0.5, 1.0, 1.5],
@@ -14,8 +15,7 @@ sample_irm = [
 ]
 
 if __name__ == '__main__':
-    bi_irm = Binomial(2)
-    bi_irm.append(sample_irm)
+    bi_irm = bi.model(sample_irm)
 
     r0 = bi_irm.value(0, 0)
     r1 = bi_irm.value(1, 0)
