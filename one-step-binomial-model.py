@@ -1,5 +1,4 @@
 from price import *
-from binomial import Binomial
 import binomial as bi
 
 sample_market_data = {

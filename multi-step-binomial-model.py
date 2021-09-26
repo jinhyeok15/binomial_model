@@ -29,17 +29,18 @@ if __name__ == '__main__':
     not_adjusted_rnp = rnp(p10, p11, r00, pm2, delta=0.5)
     print("rnp not adjusted: " + str(not_adjusted_rnp))
 
-    bp = bond_model(100, irm, not_adjusted_rnp)
+    bpm1 = bond_model(100, irm, not_adjusted_rnp)
+    bp00 = bpm1.value(0, 0)
+    bp10 = bpm1.value(1, 0)
+    bp11 = bpm1.value(1, 1)
+    print("Risk Neutral Price Model: " + str(bpm1.data))
 
-    bp10 = bp.value(1, 0)
-    bp11 = bp.value(1, 1)
+    print("price error: " + str((bp00-pm3)**2*100) + "%")
 
-    print("Risk Neutral Price Model: " + str(bp.data))
-
-    adjusted_rnp = rnp(bp10, bp11, r00, pm3, delta=0.5)
+    adjusted_rnp = adjust_rnp(bpm1, irm, pm3, 0.5)[0]
     print("adjusted rnp: " + str(adjusted_rnp))
-
-    expected_price = np.exp(-r00 * 0.5) * (bp10 * adjusted_rnp + bp11 * (1 - adjusted_rnp))
+    bpm2 = bond_model(100, irm, adjusted_rnp)
+    expected_price = bpm2.value(0, 0)
     print("expected price: " + str(expected_price))
 
     print("-----------------------------------")
