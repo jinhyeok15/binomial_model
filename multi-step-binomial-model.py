@@ -29,9 +29,9 @@ if __name__ == '__main__':
     not_adjusted_rnp = rnp(p10, p11, r00, pm2, delta=0.5)
     print("rnp not adjusted: " + str(not_adjusted_rnp))
 
-    bond_price = []
     i = irm.size - 1  # size = 3
     rear = [100 for r in range(2 ** irm.size)]
+    bond_price = [rear]
     while i >= 0:
         node_price = []
         for j in range(2 ** i):
@@ -49,6 +49,8 @@ if __name__ == '__main__':
 
     bp10 = bp.value(1, 0)
     bp11 = bp.value(1, 1)
+
+    print("Risk Neutral Price Model: " + str(bp.data))
 
     adjusted_rnp = rnp(bp10, bp11, r00, pm3, delta=0.5)
     print("adjusted rnp: " + str(adjusted_rnp))

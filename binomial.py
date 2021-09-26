@@ -3,6 +3,7 @@ class Binomial:
         self.size = size
         self.address = []
         self.tree = []
+        self.data = None
 
         # make address model
         length = 2 ** size - 1
@@ -44,6 +45,7 @@ class Binomial:
     def append(self, data):
         if len(data) != self.size:
             raise MemoryError
+        self.data = data
         cnt = 0
         for arr in data:
             if cnt == 0:
@@ -80,6 +82,16 @@ class Binomial:
             if i[0] == path1 or i[0] == path2:
                 children.append(i[1])
         return children
+
+    def exchange(self, node, index, value):
+        address = self.path(node, index)
+        i = 0
+        while i < len(self.tree):
+            if self.tree[i][0] == address:
+                self.tree[i][1] = value
+                self.data[node][index] = value
+                return
+            i += 1
 
 
 def model(tree):
