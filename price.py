@@ -12,14 +12,14 @@ def rnp(up, dn, ir, market_price, delta=1.0):
     return x
 
 
-def simultaneous_equation(coefficient, objective):  # np.matrix
+def simultaneous_equation(coefficient, objective):  # parameters' type is np.matrix
     inv_coefficient = np.linalg.inv(coefficient)
     return inv_coefficient*objective
 
 
-def bond_model(principal, irm, rn_prop):
+def bond_model(par, irm, rn_prop):
     i = irm.size - 1
-    rear = [principal for r in range(2 ** irm.size)]
+    rear = [par for r in range(2 ** irm.size)]
     bond_price = [rear]
     while i >= 0:
         node_price = []
@@ -36,16 +36,31 @@ def bond_model(principal, irm, rn_prop):
     return bi.model(bond_price)
 
 
+# binomial model rounding
+def round_model(model, num):
+    nd = 0
+    for i in model.data:
+        idx = 0
+        for j in i:
+            model.exchange(nd, idx, round(j, num))
+            idx += 1
+        nd += 1
+    return model
+
+
 def adjust_rnp(bpm, irm, pm, delta):
     p = sym.Symbol('p')
-    bp20 = bpm.value(2, 0)
-    bp21 = bpm.value(2, 1)
-    bp22 = bpm.value(2, 2)
-    bp23 = bpm.value(2, 3)
-    r10 = irm.value(1, 0)
-    r11 = irm.value(1, 1)
-    r00 = irm.value(0, 0)
-    bp10 = sym.expand(model_price(bp20*p+bp21*(1-p), r10, delta=delta))
-    bp11 = sym.expand(model_price(bp22*p+bp23*(1-p), r11, delta=delta))
-    bp00 = sym.expand(model_price(bp10*p+bp11*(1-p), r00, delta=delta))
-    return sym.solve(bp00-pm, p)
+    i = irm.size - 1
+    par = bpm.value(bpm.size-1, 0)
+    rear = [par for r in range(2 ** irm.size)]
+    while i >= 0:
+        node_price = []
+        for j in range(2**i):
+            c1 = rear[2*j]
+            c2 = rear[2*j+1]
+            rij = irm.value(i, j)
+            price = sym.expand(model_price(c1*p+c2*(1-p), rij, delta=delta))
+            node_price.append(price)
+        rear = node_price
+        i -= 1
+    return sym.solve(rear[0]-pm, p)

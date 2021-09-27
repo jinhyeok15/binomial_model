@@ -17,7 +17,6 @@ sample_irm = [
 
 if __name__ == '__main__':
     irm = bi.model(sample_irm)
-
     r00 = irm.value(0, 0)
     r10 = irm.value(1, 0)
     r11 = irm.value(1, 1)
@@ -27,20 +26,21 @@ if __name__ == '__main__':
     pm3 = sample_market_data["Price"][2]
 
     not_adjusted_rnp = rnp(p10, p11, r00, pm2, delta=0.5)
-    print("rnp not adjusted: " + str(not_adjusted_rnp))
+    print("rnp not adjusted: " + str(round(not_adjusted_rnp, 4)))
 
-    bpm1 = bond_model(100, irm, not_adjusted_rnp)
+    bpm1 = round_model(bond_model(100, irm, not_adjusted_rnp), 4)
     bp00 = bpm1.value(0, 0)
     bp10 = bpm1.value(1, 0)
     bp11 = bpm1.value(1, 1)
     print("Risk Neutral Price Model: " + str(bpm1.data))
 
-    print("price error: " + str((bp00-pm3)**2*100) + "%")
+    print("price error: " + str(round((bp00-pm3)**2*100, 2)) + "%")
 
     adjusted_rnp = adjust_rnp(bpm1, irm, pm3, 0.5)[0]
-    print("adjusted rnp: " + str(adjusted_rnp))
-    bpm2 = bond_model(100, irm, adjusted_rnp)
+    print("adjusted rnp: " + str(round(adjusted_rnp, 4)))
+    bpm2 = round_model(bond_model(100, irm, adjusted_rnp), 4)
     expected_price = bpm2.value(0, 0)
     print("expected price: " + str(expected_price))
+    print("adjusted bond model: " + str(bpm2.data))
 
     print("-----------------------------------")
