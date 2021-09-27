@@ -18,4 +18,8 @@ while문 -indent
 * model function 추가하기:
 /
 >
+
+<9.27
+* adjust_rnp 추가하기: 완료/
+>
 >
