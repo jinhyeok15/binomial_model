@@ -1,44 +1,56 @@
 from price import *
 import binomial as bi
+from zero import *
+
+data = [
+    [100, 0.50, 0, 99.5],
+    [100, 1.00, 0, 98.3],
+    [100, 1.50, 0, 97.1]
+]
 
 sample_market_data = {
         "Maturity": [0.5, 1.0, 1.5],
-        "Price": [99.1338, 97.8925, 96.1531],
-        "Yield": [0.0174, 0.0213, 0.0262],
-        "ForwardRate": [0.0174, 0.0252, 0.0359]
+        "Price": [99.5, 98.3, 97.1],
+        "Yield": zeros(data),
+        "ForwardRate": forward_rate(data, 0.5)
     }
 
-sample_irm = [
-    [0.0174],
-    [0.0339, 0.0095],
-    [0.05, 0.0256, 0.0256, 0.0011]
+one_step_irm = [
+    [0.0100],
+    [0.0300, 0.005]
+]
+
+two_step_irm = [
+    [0.0100],
+    [0.0300, 0.005],
+    [0.0350, 0.0240, 0.0240, 0.004]
 ]
 
 
 if __name__ == '__main__':
-    irm = bi.model(sample_irm)
-    r00 = irm.value(0, 0)
-    r10 = irm.value(1, 0)
-    r11 = irm.value(1, 1)
-    p10 = model_price(100, r10, delta=0.5)
-    p11 = model_price(100, r11, delta=0.5)
-    pm2 = sample_market_data["Price"][1]
-    pm3 = sample_market_data["Price"][2]
+    irm1 = bi.model(one_step_irm)
+    mp10 = sample_market_data["Price"][1]
+    rnp0 = rnp(100, irm1, mp10, 0.5)
+    print("rnp at one step: " + str(rnp0))
+    bpm0 = bond_model(100, irm1, [rnp0], 0.5)
+    print(round_model(bpm0, 4))
 
-    rnp0 = rnp(p10, p11, r00, pm2, delta=0.5)
-    print("rnp not adjusted: " + str(round(rnp0, 4)))
+    # put option payoff (RNP approach)
+    rk = 0.02
+    put_p1 = 100 * max(rk - bpm0.value(1, 0), 0)
+    put_p2 = 100 * max(rk - bpm0.value(1, 1), 0)
+    exp_value = put_p1 * rnp0 + put_p2 * (1 - rnp0)
+    print("expected value at 6-month: " + str(exp_value))
+    exp_value = model_price(exp_value, bpm0.value(0, 0), delta=0.5)
+    print("discounted value: " + str(exp_value))
 
-    bpm1 = round_model(bond_model(100, irm, [rnp0, rnp0]), 4)
-    bp00 = bpm1.value(0, 0)
-    print("Risk Neutral Price Model: " + str(bpm1.data))
-
-    print("price error: " + str(round((bp00-pm3)**2*100, 2)) + "%")
-    rnp1 = adjust_rnp(bpm1, irm, [rnp0], pm3, 0.5)
-
-    print("adjusted rnp: " + str(round(rnp1, 4)))
-    bpm2 = round_model(bond_model(100, irm, [rnp0, rnp1]), 4)
-    expected_price = bpm2.value(0, 0)
-    print("expected price: " + str(expected_price))
-    print("adjusted bond model: " + str(bpm2.data))
+    irm2 = bi.model(two_step_irm)
+    mp15 = sample_market_data["Price"][2]
+    bpm1 = bond_model(100, irm2, [rnp0, rnp0], 0.5)
+    sol_rnp1 = adjust_rnp(bpm1, irm2, [rnp0], mp15, 0.5)
+    print("solution: " + str(sol_rnp1))
+    rnp1 = sol_rnp1[0]
+    print("rnp with adjust: " + str(rnp1))
+    bpm2 = bond_model(100, irm2, [rnp0, rnp1], 0.5)
 
     print("-----------------------------------")
