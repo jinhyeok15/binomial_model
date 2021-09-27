@@ -17,18 +17,20 @@ def simultaneous_equation(coefficient, objective):  # parameters' type is np.mat
     return inv_coefficient*objective
 
 
-def bond_model(par, irm, rn_prop):
+def bond_model(par, irm, rnp_list):
+    rnp_list.append(1)
     i = irm.size - 1
     rear = [par for r in range(2 ** irm.size)]
     bond_price = [rear]
     while i >= 0:
         node_price = []
         for j in range(2 ** i):
+            p = rnp_list[i]
             c1 = rear[2 * j]
             c2 = rear[2 * j + 1]
             rij = irm.value(i, j)
-            price = model_price(c1, rij, delta=0.5) * rn_prop + \
-                model_price(c2, rij, delta=0.5) * (1 - rn_prop)
+            price = model_price(c1, rij, delta=0.5) * p + \
+                model_price(c2, rij, delta=0.5) * (1 - p)
             node_price.append(price)
         bond_price.insert(0, node_price)
         rear = node_price
@@ -48,19 +50,19 @@ def round_model(model, num):
     return model
 
 
-def adjust_rnp(bpm, irm, pm, delta):
-    p = sym.Symbol('p')
-    i = irm.size - 1
-    par = bpm.value(bpm.size-1, 0)
-    rear = [par for r in range(2 ** irm.size)]
+def adjust_rnp(bpm, irm, rnp_list, pm, delta):
+    x = sym.Symbol("x")
+    rnp_list.append(x)
+    i = irm.size-2
+    rear = bpm.data[i+1]
     while i >= 0:
-        node_price = []
+        value_list = []
         for j in range(2**i):
-            c1 = rear[2*j]
-            c2 = rear[2*j+1]
+            p = rnp_list[i]
+            c1 = rear[2 * j]
+            c2 = rear[2 * j + 1]
             rij = irm.value(i, j)
-            price = sym.expand(model_price(c1*p+c2*(1-p), rij, delta=delta))
-            node_price.append(price)
-        rear = node_price
+            value_list.append(sym.expand(model_price(c1*p+c2*(1-p), rij, delta=delta)))
+        rear = value_list
         i -= 1
-    return sym.solve(rear[0]-pm, p)
+    return sym.solve(rear[0]-pm, x)[0]
