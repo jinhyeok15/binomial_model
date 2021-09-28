@@ -14,9 +14,10 @@ def rnp(par, irm, market_price, delta=1.0):  # only use one-step model
     return x
 
 
-def simultaneous_equation(coefficient, objective):  # parameters' type is np.matrix
+def simultaneous_equation(coefficient, target):  # parameters' type is np.matrix
     inv_coefficient = np.linalg.inv(coefficient)
-    return inv_coefficient*objective
+    print(inv_coefficient)
+    return inv_coefficient*target
 
 
 def bond_model(par, irm, rnp_list, delta):
@@ -68,3 +69,17 @@ def adjust_rnp(bpm, irm, rnp_list, pm, delta):
         rear = value_list
         i -= 1
     return sym.solve(rear[0]-pm, x)
+
+
+if __name__ == '__main__':
+    co = np.matrix(
+        [
+            [1.009, 1.004],
+            [1.009, 1.017]
+        ]
+    )
+    t = np.matrix(
+        [[0], [1.05]]
+    )
+    sol = simultaneous_equation(co, t)
+    print(sol)
