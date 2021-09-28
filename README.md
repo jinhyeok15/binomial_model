@@ -22,4 +22,8 @@ while문 -indent
 <9.27
 * adjust_rnp 추가하기: 완료/
 >
+
+<9.28
+* ipynb 파일 작성하기, 설명 추가
+>
 >
