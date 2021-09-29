@@ -45,7 +45,9 @@ class Binomial:
     def append(self, data):
         if len(data) != self.size:
             raise MemoryError
+
         self.data = data
+        node_cnt = 0
         cnt = 0
         for arr in data:
             if cnt == 0:
@@ -54,10 +56,14 @@ class Binomial:
                 except TypeError:
                     self.tree.append([self.address[cnt], arr])
                 cnt += 1
+                node_cnt += 1
                 continue
+            if 2**node_cnt != len(arr):
+                raise MemoryError
             for i in arr:
                 self.tree.append([self.address[cnt], i])
                 cnt += 1
+            node_cnt += 1
         return 1
 
     def path(self, node, index):
@@ -104,7 +110,7 @@ if __name__ == "__main__":
     irm = [
         0.0174,
         [0.0339, 0.0095],
-        [0.05, 0.0256, 0.0256, 0.0011]
+        [0.05, 0.0256, 0.0011]
     ]
     b = Binomial(3)
     print(b)

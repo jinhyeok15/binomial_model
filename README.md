@@ -20,4 +20,4 @@
 
 ### 9.29
 * MarkDown 형식 수정
-
++ binomial simplify 기능 추가
