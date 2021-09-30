@@ -42,11 +42,13 @@ class Binomial:
                f'Address Length: {len(self.address)}\n' + \
                f'Tree Form: {tree}'
 
-    def append(self, data):
+    def append(self, data, simplify=False):
         if len(data) != self.size:
             raise MemoryError
-
+        if simplify:
+            data = _simplify(data)
         self.data = data
+        print(data)
         node_cnt = 0
         cnt = 0
         for arr in data:
@@ -100,10 +102,32 @@ class Binomial:
             i += 1
 
 
-def model(tree):
+def model(tree, simplify=False):
     bi = Binomial(len(tree))
-    bi.append(tree)
+    bi.append(tree, simplify=simplify)
     return bi
+
+
+def _simplify(data):
+    if len(data) < 3:
+        return
+    i = 1
+    while i < len(data)-1:
+        insert_value = []
+        j = i+1
+        k = 0
+        n = k
+        while k < len(data[i]):
+            insert_value.append(data[j][n])
+            insert_value.append(data[j][n+1])
+            if k+1 == len(data[i]):
+                break
+            if data[i][k] != data[i][k+1]:
+                n += 1
+            k += 1
+        data[j] = insert_value
+        i += 1
+    return data
 
 
 if __name__ == "__main__":
@@ -114,5 +138,5 @@ if __name__ == "__main__":
     ]
     b = Binomial(3)
     print(b)
-    a = model(irm)
+    a = model(irm, simplify=True)
     print(a)
