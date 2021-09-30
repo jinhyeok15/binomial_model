@@ -39,7 +39,7 @@ class Binomial:
         return f'Binomial Object {super().__str__()}\n' + \
                f'Size: {self.size}\n' + \
                f'Address List: {str(self.address)}\n' + \
-               f'Address Length: {len(self.address)}\n' + \
+               f'Length: {len(self.address)}\n' + \
                f'Tree Form: {tree}'
 
     def append(self, data, simplify=False):
