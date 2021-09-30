@@ -113,19 +113,19 @@ def _simplify(data):
         return
     i = 1
     while i < len(data)-1:
-        insert_value = []
+        replace = []
         j = i+1
         k = 0
         n = k
         while k < len(data[i]):
-            insert_value.append(data[j][n])
-            insert_value.append(data[j][n+1])
+            replace.append(data[j][n])
+            replace.append(data[j][n+1])
             if k+1 == len(data[i]):
                 break
             if data[i][k] != data[i][k+1]:
                 n += 1
             k += 1
-        data[j] = insert_value
+        data[j] = replace
         i += 1
     return data
 
