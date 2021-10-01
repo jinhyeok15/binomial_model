@@ -71,6 +71,10 @@ def adjust_rnp(bpm, irm, rnp_list, pm, delta):
     return sym.solve(rear[0]-pm, x)
 
 
+def ho_lee_solution(ir, theta, vol, delta):
+    return [ir+theta*delta + vol*delta**0.5, ir+theta*delta - vol*delta**0.5]
+
+
 if __name__ == '__main__':
     co = np.matrix(
         [

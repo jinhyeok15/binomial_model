@@ -48,7 +48,6 @@ class Binomial:
         if simplify:
             data = _simplify(data)
         self.data = data
-        print(data)
         node_cnt = 0
         cnt = 0
         for arr in data:
