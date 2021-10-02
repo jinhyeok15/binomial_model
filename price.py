@@ -86,24 +86,6 @@ def ho_lee_irm(par, r0, market_data, volatility, delta, th0=0.01):
     return _irm
 
 
-def bdt_irm(par, r0, market_data, log_volatility, delta, th0=0.01):
-    _rnp = []
-    _log_irm = bi.model([[np.log(r0)]])
-    for i in market_data:
-        _rnp.append(0.5)
-        get_bpm = lambda th: bond_model(par,
-                                        _get_next_irm(_log_irm, th, log_volatility, delta).change_model(np.exp),
-                                        _rnp, delta)
-        price_error = lambda th: (get_bpm(th).value(0, 0) - i) ** 2
-        _result = fsolve(price_error, th0)
-        theta = _result[0]
-        print(_log_irm.data)
-        _log_irm.change_model(np.log)
-        _log_irm = _get_next_irm(_log_irm, theta, log_volatility, delta)
-        _log_irm.change_model(np.log)
-    return _log_irm.change_model(np.exp)
-
-
 def _ir_by_ho_lee(ir, theta, vol, delta):
     return [ir + theta * delta + vol * delta ** 0.5,
             ir + theta * delta - vol * delta ** 0.5]
@@ -122,5 +104,4 @@ def _get_next_irm(__irm, __th, __vol, __delta):
 
 
 if __name__ == '__main__':
-    irm_with_bdt = round_model(bdt_irm(100, 0.0174, [97.8925, 96.1531], 0.2142, 0.5), 4)
-    print(irm_with_bdt.data)
+    print("main")
