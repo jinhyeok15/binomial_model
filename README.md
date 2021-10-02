@@ -1,7 +1,7 @@
 # Binomial Model
 ## 1. [binomial-model](binomial-model.ipynb)
 
-## 2. [holee-model](holee-model.ipynb)
+## 2. [bdt-model](bdt-model.ipynb)
 
 ## log
 ### 9.24
@@ -26,3 +26,4 @@
 
 ### 10.2
 * ho-lee model 추가
+* bdt-model 추가

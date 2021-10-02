@@ -100,6 +100,16 @@ class Binomial:
                 return
             i += 1
 
+    def change_model(self, func, *args, **kwargs):
+        nd = 0
+        for i in self.data:
+            idx = 0
+            for j in i:
+                self.exchange(nd, idx, func(j, *args, **kwargs))
+                idx += 1
+            nd += 1
+        return self
+
 
 def model(tree, simplify=False):
     bi = Binomial(len(tree))
@@ -131,7 +141,7 @@ def _simplify(data):
 
 if __name__ == "__main__":
     irm = [
-        0.0174,
+        [0.0174],
         [0.0339, 0.0095],
         [0.05, 0.0256, 0.0011]
     ]
@@ -139,3 +149,5 @@ if __name__ == "__main__":
     print(b)
     a = model(irm, simplify=True)
     print(a)
+    a.change_model(round, 2)
+    print(a.tree)
