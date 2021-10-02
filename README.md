@@ -1,5 +1,7 @@
 # Binomial Model
-## [> Explanation Here](binomial-model.ipynb)
+## 1. [binomial-model](binomial-model.ipynb)
+
+## 2. [holee-model](holee-model.ipynb)
 
 ## log
 ### 9.24
@@ -16,8 +18,11 @@
 
 
 ### 9.28
-+ ipynb 파일 작성하기, 설명 추가
+* ipynb 파일 작성하기, 설명 추가
 
 ### 9.29
 * MarkDown 형식 수정
-+ binomial simplify 기능 추가
+* binomial simplify 기능 추가
+
+### 10.2
+* ho-lee model 추가
