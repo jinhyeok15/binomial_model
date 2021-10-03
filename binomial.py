@@ -46,11 +46,12 @@ class Binomial:
         if len(data) != self.size:
             raise MemoryError
         if simplify:
-            data = _simplify(data)
-        self.data = data
+            self.data = _simplify(data)
+        else:
+            self.data = data
         node_cnt = 0
         cnt = 0
-        for arr in data:
+        for arr in self.data:
             if cnt == 0:
                 try:
                     self.tree.append([self.address[cnt], arr[0]])
@@ -102,7 +103,7 @@ class Binomial:
 
     def change_model(self, func, *args, **kwargs):
         nd = 0
-        for i in self.data:
+        for i in self.as_list():
             idx = 0
             for j in i:
                 self.exchange(nd, idx, func(j, *args, **kwargs))
@@ -128,7 +129,7 @@ def model(tree, simplify=False):
 
 def _simplify(data):
     if len(data) < 3:
-        return
+        return data
     i = 1
     while i < len(data)-1:
         replace = []

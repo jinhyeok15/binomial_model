@@ -106,4 +106,8 @@ def _get_next_irm(__irm, __th, __vol, __delta):
 
 
 if __name__ == '__main__':
-    print("main")
+    lia = [1, 2]
+    lib = list(map(lambda x: x, lia))
+    lib.append(3)
+    print(lia)
+    print(lib)
