@@ -110,6 +110,15 @@ class Binomial:
             nd += 1
         return self
 
+    def as_list(self):
+        l_data = []
+        for i in range(self.size):
+            node_data = []
+            for j in range(2**i):
+                node_data.append(self.value(i, j))
+            l_data.append(node_data)
+        return l_data
+
 
 def model(tree, simplify=False):
     bi = Binomial(len(tree))
@@ -148,6 +157,7 @@ if __name__ == "__main__":
     b = Binomial(3)
     print(b)
     a = model(irm, simplify=True)
-    print(a)
+    c = a.as_list()[-1]
+    print(c)
     a.change_model(round, 2)
-    print(a.tree)
+    print(a.as_list())

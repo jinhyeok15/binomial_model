@@ -21,19 +21,21 @@ def simultaneous_equation(coefficient, target):  # parameters' type is np.matrix
 
 
 def bond_model(par, irm, rnp_list, delta):
-    rnp_list.append(1.0)
     i = irm.size - 1
     rear = [par for r in range(2 ** irm.size)]
     bond_price = [rear]
     while i >= 0:
         node_price = []
         for j in range(2 ** i):
-            p = rnp_list[i]
+            if i == irm.size - 1:
+                p = 1
+            else:
+                p = rnp_list[i]
             c1 = rear[2 * j]
             c2 = rear[2 * j + 1]
             rij = irm.value(i, j)
             price = model_price(c1, rij, delta) * p + \
-                    model_price(c2, rij, delta) * (1 - p)
+                model_price(c2, rij, delta) * (1 - p)
             node_price.append(price)
         bond_price.insert(0, node_price)
         rear = node_price
