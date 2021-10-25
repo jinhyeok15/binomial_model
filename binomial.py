@@ -120,6 +120,41 @@ class Binomial:
             l_data.append(node_data)
         return l_data
 
+    def beautify(self, __round=4):
+        string = "| "
+        layer = 0
+        indent = 2
+        size = self.size
+        value_list = []
+
+        cnt = 1
+        for li in self.as_list():
+            append_list = [li[0]]
+            i = 1
+            while i < len(li):
+                if li[i] != li[i - 1]:
+                    append_list.append(li[i])
+                i += 1
+            while len(append_list) < cnt:
+                append_list.append(append_list[0])
+            cnt += 1
+            value_list.append(append_list)
+
+        while layer < size:
+            step = layer
+            while step < size:
+                value = str(round(value_list[step][layer], __round))
+                if step == layer:
+                    indent += len(value)
+                string += value
+                string += " | "
+                step += 1
+            
+            if layer < size - 1:
+                string += "\n" + (" " * indent) + " | "
+            layer += 1
+        return string
+
 
 def model(tree, simplify=False):
     bi = Binomial(len(tree))
