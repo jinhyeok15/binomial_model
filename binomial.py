@@ -149,7 +149,7 @@ class Binomial:
                 string += value
                 string += " | "
                 step += 1
-            
+
             if layer < size - 1:
                 string += "\n" + (" " * indent) + " | "
             layer += 1
